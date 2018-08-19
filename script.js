@@ -1,28 +1,15 @@
 // Quiz stored in an IIFE
 function startQuiz() {
 
-    var winningScore = 10;
-    var points;
-
     // Question Function Constructor
     var Question = function(question, possibleAnswers, correctAnswer) {
         this.question = question;
         this.possibleAnswers = possibleAnswers;
         this.correctAnswer = correctAnswer;
         this.showQuestion = function(question, possibleAnswers) {
-            console.log(this.question);
-            console.log(this.possibleAnswers);
-            if (question !== null) {
-                var userAnswer = prompt("Enter the number corresponding to the correct answer:");
-                if (userAnswer === this.correctAnswer) {
-                    alert("Correct!");
-                    startQuiz();
-                } else if (userAnswer === "exit") {
-                    window.stop();
-                } else {
-                    alert("Wrong answer.");
-                    startQuiz();
-                }
+            if (question !== null && possibleAnswers !== null) {
+                console.log(this.question);
+                console.log(this.possibleAnswers);
             }
         }
     }
@@ -54,9 +41,34 @@ function startQuiz() {
     // trigger showQuestion method for activeQuestion 
     activeQuestion.showQuestion();
 
+    var points = 0;
+    var winningScore = 10;
+
+    // prompt user for an answer
+    var userAnswer = prompt("Enter the number corresponding to the correct answer:");
+
+    var check = checkAnswer(activeQuestion.correctAnswer);
+    check(userAnswer);
+
+    function checkAnswer(correctAnswer){
+        return function(userAnswer) {
+            if(userAnswer === activeQuestion.correctAnswer) {
+                alert("Correct!");
+                points += 1;
+                console.log("Points: " + points);
+                startQuiz();
+            } else {
+                alert("Wrong answer.");
+                startQuiz();
+            }
+        }
+    }
+
+    
 }
 
-//startQuiz();
+alert("Get ready to start the quiz!");
+startQuiz();
 
 
 
