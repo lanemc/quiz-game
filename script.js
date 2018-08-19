@@ -110,10 +110,10 @@
     q3.possibleAnswers = ['Mesozoic', 'Mesoproterozoic', 'Cenozoic', 'or type exit to quit'];
     q3.correctAnswer = 2;
 
-    function nextQuestion() {
-        // store the questions in an array
-        var questions = [q1, q2, q3];
+    // store the questions in an array
+    var questions = [q1, q2, q3];
 
+    function nextQuestion() {
         // select a random question
         var activeQuestion = Math.floor(Math.random()*questions.length);
 
@@ -121,9 +121,12 @@
         questions[activeQuestion].showQuestion();
 
         // prompt user for an answer
-        var userAnswer = parseInt(prompt("Enter the number corresponding to the correct answer."));
+        var userAnswer = prompt("Enter the number corresponding to the correct answer.");
 
-        questions[activeQuestion].checkAnswer(userAnswer);
+        if(userAnswer !== 'exit') {
+            questions[activeQuestion].checkAnswer(parseInt(userAnswer));
+            nextQuestion();
+        }
     }
     
     nextQuestion();
