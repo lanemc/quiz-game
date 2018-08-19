@@ -6,6 +6,12 @@ var Question = function(question, possibleAnswers, correctAnswer) {
     this.showQuestion = function(question, possibleAnswers) {
         console.log(this.question);
         console.log(this.possibleAnswers);
+        var userAnswer = prompt("Enter the number corresponding to the correct answer:");
+        if (userAnswer === this.correctAnswer) {
+            alert("Correct!");
+        } else {
+            alert("Wrong answer.");
+        }
     }
 }
 
@@ -30,8 +36,10 @@ q3.correctAnswer = "3";
 // store the questions in an array
 var questions = [q1, q2, q3];
 
+// select a random question
 var activeQuestion = questions[Math.floor(Math.random()*questions.length)];
 
+// trigger showQuestion method for activeQuestion 
 activeQuestion.showQuestion();
 
 
