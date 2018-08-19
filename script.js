@@ -82,11 +82,10 @@
         }
     }
 
-    Question.prototype.checkAnswer = function(ans) {
-        if (ans === 'exit') {
-            window.stop();
-        } else if(ans === this.correctAnswer) {
+    Question.prototype.checkAnswer = function(ans, callback) {
+        if(ans === this.correctAnswer) {
             alert("Correct!");
+            callback(true);
         } else {
             alert("Wrong answer. Try again.");
         }
@@ -110,10 +109,22 @@
     q3.possibleAnswers = ['Mesozoic', 'Mesoproterozoic', 'Cenozoic', 'or type exit to quit'];
     q3.correctAnswer = 2;
 
-    function nextQuestion() {
-        // store the questions in an array
-        var questions = [q1, q2, q3];
+    // store the questions in an array
+    var questions = [q1, q2, q3];
 
+    function score() {
+        var sc = 0;
+        return function(correct) {
+            if (correct) {
+                sc++;
+            }
+            return sc;
+        }
+    }
+
+    var keepScore = score();
+
+    function nextQuestion() {
         // select a random question
         var activeQuestion = Math.floor(Math.random()*questions.length);
 
@@ -121,9 +132,12 @@
         questions[activeQuestion].showQuestion();
 
         // prompt user for an answer
-        var userAnswer = parseInt(prompt("Enter the number corresponding to the correct answer."));
+        var userAnswer = prompt("Enter the number corresponding to the correct answer.");
 
-        questions[activeQuestion].checkAnswer(userAnswer);
+        if(userAnswer !== 'exit') {
+            questions[activeQuestion].checkAnswer(parseInt(userAnswer), keepScore);
+            nextQuestion();
+        }
     }
     
     nextQuestion();
