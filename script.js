@@ -82,11 +82,10 @@
         }
     }
 
-    Question.prototype.checkAnswer = function(ans) {
-        if (ans === 'exit') {
-            window.stop();
-        } else if(ans === this.correctAnswer) {
+    Question.prototype.checkAnswer = function(ans, callback) {
+        if(ans === this.correctAnswer) {
             alert("Correct!");
+            callback(true);
         } else {
             alert("Wrong answer. Try again.");
         }
@@ -113,6 +112,18 @@
     // store the questions in an array
     var questions = [q1, q2, q3];
 
+    function score() {
+        var sc = 0;
+        return function(correct) {
+            if (correct) {
+                sc++;
+            }
+            return sc;
+        }
+    }
+
+    var keepScore = score();
+
     function nextQuestion() {
         // select a random question
         var activeQuestion = Math.floor(Math.random()*questions.length);
@@ -124,7 +135,7 @@
         var userAnswer = prompt("Enter the number corresponding to the correct answer.");
 
         if(userAnswer !== 'exit') {
-            questions[activeQuestion].checkAnswer(parseInt(userAnswer));
+            questions[activeQuestion].checkAnswer(parseInt(userAnswer), keepScore);
             nextQuestion();
         }
     }
