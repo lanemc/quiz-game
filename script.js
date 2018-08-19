@@ -83,12 +83,21 @@
     }
 
     Question.prototype.checkAnswer = function(ans, callback) {
+        var sc;
         if(ans === this.correctAnswer) {
             alert("Correct!");
-            callback(true);
+            sc = callback(true);
         } else {
             alert("Wrong answer. Try again.");
+            sc = callback(false);
         }
+
+        this.displayScore(sc);
+    }
+
+    Question.prototype.displayScore = function(score) {
+        console.log('Your current score is: ' + score);
+        console.log('------------------------------');
     }
 
     // new question q1
